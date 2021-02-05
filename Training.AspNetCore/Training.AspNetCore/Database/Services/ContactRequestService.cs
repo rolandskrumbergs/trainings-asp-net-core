@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Training.AspNetCore.Database.Models;
 
 namespace Training.AspNetCore.Database.Services
@@ -17,17 +15,45 @@ namespace Training.AspNetCore.Database.Services
 
         public ContactRequest AddContactRequest(ContactRequest contactRequest)
         {
-            throw new NotImplementedException();
+            var newContactRequest = new ContactRequest
+            {
+                Name = contactRequest.Name,
+                Email = contactRequest.Email,
+                Content = contactRequest.Content,
+                Subject = contactRequest.Subject
+            };
+
+            _dbContext.Add(newContactRequest);
+            _dbContext.SaveChanges();
+
+            return newContactRequest;
         }
 
         public ContactRequest DeleteContactRequest(int id)
         {
-            throw new NotImplementedException();
+            var contactRequestToDelete = _dbContext.ContactRequests.FirstOrDefault(x => x.Id == id);
+
+            if (contactRequestToDelete != null)
+            {
+                _dbContext.Remove(contactRequestToDelete);
+                _dbContext.SaveChanges();
+
+                return contactRequestToDelete;
+            }
+
+            return null;
         }
 
         public ContactRequest GetContactRequest(int id)
         {
-            throw new NotImplementedException();
+            var contactRequestToFind = _dbContext.ContactRequests.FirstOrDefault(x => x.Id == id);
+
+            if (contactRequestToFind != null)
+            {
+                return contactRequestToFind;
+            }
+
+            return null;
         }
 
         public List<ContactRequest> GetContactRequests()
@@ -37,7 +63,21 @@ namespace Training.AspNetCore.Database.Services
 
         public ContactRequest UpdateContactRequest(ContactRequest contactRequest)
         {
-            throw new NotImplementedException();
+            var contactRequestToUpdate = _dbContext.ContactRequests.FirstOrDefault(x => x.Id == contactRequest.Id);
+
+            if (contactRequestToUpdate == null)
+            {
+                return null;
+            }
+
+            contactRequestToUpdate.Name = contactRequest.Name;
+            contactRequestToUpdate.Email = contactRequest.Email;
+            contactRequestToUpdate.Subject = contactRequest.Subject;
+            contactRequestToUpdate.Content = contactRequest.Content;
+
+            _dbContext.SaveChanges();
+
+            return contactRequestToUpdate;
         }
     }
 }
