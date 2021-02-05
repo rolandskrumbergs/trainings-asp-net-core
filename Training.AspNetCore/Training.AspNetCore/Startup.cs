@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Training.AspNetCore.Database;
+using Training.AspNetCore.Database.Services;
 
 namespace Training.AspNetCore
 {
@@ -29,6 +30,8 @@ namespace Training.AspNetCore
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Training.AspNetCore", Version = "v1" });
             });
+
+            services.AddTransient<IContactRequestService, ContactRequestService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
